@@ -314,3 +314,18 @@ u - unicode mode
 
 
 */
+
+//Car and cat
+var carCatRexExp= /ca(t|r)/;
+console.log("car".match(carCatRexExp));
+console.log("cat".match(carCatRexExp));
+
+//Pop and prop
+var regExp2 = /p(r|o)(p|o)p*/;
+console.log("prop".match(regExp2));
+console.log("pop".match(regExp2));
+
+var regExp3 = /ferr(e|y|a)(t*|r*)i*/;
+console.log("ferrari".match(regExp3));
+console.log("ferry".match(regExp3));
+console.log("ferret".match(regExp3));
