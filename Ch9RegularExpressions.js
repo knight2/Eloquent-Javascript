@@ -175,3 +175,142 @@ function getDate(string) {
 
   //The replace method
   console.log("papa".replace("p", "m"));
+  console.log("Boroburdur".replace(/[ou]/, "a"));
+  console.log("Borobudur".replace(/[ou]/g, "a"));
+
+  console.log(
+    "Liskov, Barbara\nMcCarthy, John\nWadler, Philip"
+      .replace(/(\w+), (\w+)/g, "$2 $1"));
+  
+let s = "the cia and fbi";
+console.log(s.replace(/\b(fbi|cia)\b/g,
+str => str.toUpperCase()));
+
+
+let stock = "1 lemon, 2 cabbages, and 101 eggs";
+function minusOne(match, amount, unit){
+  amount = Number(amount) -1;
+  if (amount == 1){// only one left, remove s
+  unit = unit.slice(0, unit.length -1);
+} else if (amount == 0){
+  amount = "no";
+}
+return amount + " " + unit;
+}
+console.log(stock.replace(/(\d+) (\w+)/g, minusOne));
+
+//Greed
+
+function stripComments(code) {
+  return code.replace(/\/\/.*|\/\*[^]*\*\//g, "");
+}
+
+console.log(stripComments("x = 10;// ten!"));
+
+//Dynamically creating RegExp Objects
+
+let name = "harry";
+let text = "Harry is a suspicious character.";
+let regexp = new RegExp("\\b(" + name + ")\\b", "gi");
+console.log(text.replace(regexp, "_$1_"));
+
+//The search method
+//IndexOf cannot be called with regexp
+
+console.log("   word".search(/\S/));
+
+//LastIndex Property
+//Regex have properties.
+//Soruce - string that expression was created from
+//Lastindex -- where the next match will start.
+
+let pattern = /y/g;
+pattern.lastIndex = 3;
+let match1=pattern.exec("xyzzy");
+console.log(match1.index);
+
+console.log(pattern.lastIndex);
+
+let global = /abc/g;
+console.log(global.exec("xyz abc"));
+let sticky = /abc/y;
+console.log(sticky.exec("xyz abc"));
+
+//Looping over matches
+let input = "A string with 3 numbers in it... 42 and 88.";
+let number = /\b\d+\b/g;
+let match3;
+while (match3 = number.exec(input)){
+  console.log("Found", match3[0], "at", match3.index);
+}
+
+//Passing an ini file
+
+function parseINI(string) {
+  // Start with an object to hold the top-level fields
+  let result = {};
+  let section = result;
+  string.split(/\r?\n/).forEach(line => {
+    let match;
+    if (match = line.match(/^(\w+)=(.*)$/)) {
+      section[match[1]] = match[2];
+    } else if (match = line.match(/^\[(.*)\]$/)) {
+      section = result[match[1]] = {};
+    } else if (!/^\s*(;.*)?$/.test(line)) {
+      throw new Error("Line '" + line + "' is not valid.");
+    }
+  });
+  return result;
+}
+
+console.log(parseINI(`
+name=Vasilis
+[address]
+city=Tessaloniki`));
+// → {name: "Vasilis", address: {city: "Tessaloniki"}}
+
+//International characters
+
+console.log(/🍎{3}/.test("🍎🍎🍎"));
+// → false
+console.log(/<.>/.test("<🌹>"));
+// → false
+console.log(/<.>/u.test("<🌹>"));
+// → true
+
+//Summary
+/*
+/abc/ - sequence of characters
+/[abc]/ - Any char from set
+/[^abc]/ - any char NOT from set
+/[0-9]/ -any in range
+/x+/ - one or more occ of x
+/x+?/ -one or more, non greedy
+/x*  zero or more occ
+/x?/ zero or ONE 
+/x{2,4} - 2 to 4 occ
+/(abc)/ - agroup
+/a|B|C - any one 
+/\d/ - any digit
+/\w/ - any alphnumeric
+/\s/ -any whietspace
+/./ - any char except newlines
+/\b/ - word boundary
+/^/ - start of input
+/$/ -end of input
+
+test to see if given string matches.
+Exec - returns an array if match found
+Index property where the match started.
+
+After closing slash adding
+i - match case insenstive
+g - makes global
+y - sticky, not search ahead 
+u - unicode mode
+
+
+//Regex Golf
+
+
+*/
